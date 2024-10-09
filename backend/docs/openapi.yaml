@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: Amazon Price Monitoring API
+  version: 1.0.0
+
+paths:
+  /products:
+    post:
+      summary: Añadir un nuevo producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                threshold_price:
+                  type: number
+              required:
+                - url
+                - threshold_price
+      responses:
+        '201':
+          description: Producto añadido exitosamente
+
+  /products/{id}:
+    delete:
+      summary: Eliminar la monitorización de un producto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Monitorización eliminada exitosamente
+        '404':
+          description: Producto no encontrado
+
+  /products/{id}/check-price:
+    get:
+      summary: Checkear el precio de un producto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Precio actual del producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_price:
+                    type: number
+        '404':
+          description: Producto no encontrado
+
+  /products/{id}/price-history:
+    get:
+      summary: Consultar el histórico de precios de un producto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Histórico de precios del producto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    price:
+                      type: number
+                    checked_at:
+                      type: string
+                      format: date-time
+        '404':
+          description: Producto no encontrado

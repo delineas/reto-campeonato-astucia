@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Amazon Price Tracker</title>
+  <script src="popup.js" defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 300px;
+      padding: 10px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    #priceHistory {
+      list-style-type: none;
+      padding: 0;
+    }
+    #priceHistory li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+<body>
+  <h1>Price History</h1>
+  <button id="addCurrentProduct">Add Current Product</button>
+  <input type="text" id="productId" placeholder="Enter Product ID">
+  <button id="checkPriceHistory">Check Price History</button>
+  <ul id="priceHistory"></ul>
+</body>
+</html>
