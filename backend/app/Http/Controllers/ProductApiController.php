@@ -23,7 +23,7 @@ class ProductApiController extends Controller {
         $product = Product::create([
             'url' => $validated['url'],
             'threshold_price' => $validated['threshold_price'],
-            'user_id' => 0,
+            'user_id' => 1,
             'monitoring_status' => true,
         ]);
 
@@ -75,5 +75,15 @@ class ProductApiController extends Controller {
         $priceLogs = PriceLog::where('product_id', $product->id)->get();
 
         return response()->json($priceLogs, 200);
+    }
+
+    public function findByAsin($asin) {
+        $product = Product::where('url', 'like', "%/{$asin}%")->first();
+
+        if (!$product) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        return response()->json($product, 200);
     }
 }
