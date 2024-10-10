@@ -1,12 +1,16 @@
 openapi: 3.0.0
 info:
-  title: Amazon Price Monitoring API
+  title: Amazon Price Tracker Malandriner API
+  description: API para gestionar y monitorizar precios de productos de Amazon.
   version: 1.0.0
-
+servers:
+  - url: https://amazon-price-tracker-malandriner.test/api
 paths:
   /products:
     post:
-      summary: Añadir un nuevo producto
+      summary: Agregar un producto a la monitorización
+      tags:
+        - Products
       requestBody:
         required: true
         content:
@@ -16,42 +20,70 @@ paths:
               properties:
                 url:
                   type: string
+                  format: url
+                  description: URL del producto de Amazon.
                 threshold_price:
                   type: number
+                  format: float
+                  description: Precio umbral para alertas.
               required:
                 - url
                 - threshold_price
       responses:
-        '201':
-          description: Producto añadido exitosamente
-
+        201:
+          description: Producto añadido exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Producto añadido exitosamente
+                  product:
+                    $ref: '#/components/schemas/Product'
+        400:
+          description: Datos de entrada inválidos.
   /products/{id}:
     delete:
-      summary: Eliminar la monitorización de un producto
+      summary: Eliminar un producto de la monitorización
+      tags:
+        - Products
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+          description: ID del producto a eliminar.
       responses:
-        '200':
-          description: Monitorización eliminada exitosamente
-        '404':
-          description: Producto no encontrado
-
+        200:
+          description: Monitorización eliminada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Monitorización eliminada exitosamente
+        404:
+          description: Producto no encontrado.
   /products/{id}/check-price:
     get:
-      summary: Checkear el precio de un producto
+      summary: Obtener el precio actual del producto
+      tags:
+        - Products
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+          description: ID del producto a consultar.
       responses:
-        '200':
-          description: Precio actual del producto
+        200:
+          description: Precio actual obtenido exitosamente.
           content:
             application/json:
               schema:
@@ -59,32 +91,85 @@ paths:
                 properties:
                   current_price:
                     type: number
-        '404':
-          description: Producto no encontrado
-
+                    format: float
+        404:
+          description: Producto no encontrado.
+        500:
+          description: Error al obtener el precio.
   /products/{id}/price-history:
     get:
-      summary: Consultar el histórico de precios de un producto
+      summary: Obtener el historial de precios del producto
+      tags:
+        - Products
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+          description: ID del producto.
       responses:
-        '200':
-          description: Histórico de precios del producto
+        200:
+          description: Historial de precios obtenido exitosamente.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    price:
-                      type: number
-                    checked_at:
-                      type: string
-                      format: date-time
-        '404':
-          description: Producto no encontrado
+                  $ref: '#/components/schemas/PriceLog'
+        404:
+          description: Producto no encontrado.
+  /products/{id}/find-by-asin:
+    get:
+      summary: Buscar un producto por su ASIN
+      tags:
+        - Products
+      parameters:
+        - name: asin
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ASIN del producto de Amazon.
+      responses:
+        200:
+          description: Producto encontrado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Producto no encontrado.
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+          format: url
+        threshold_price:
+          type: number
+          format: float
+        current_price:
+          type: number
+          format: float
+        monitoring_status:
+          type: boolean
+        user_id:
+          type: integer
+    PriceLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_id:
+          type: integer
+        price:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
