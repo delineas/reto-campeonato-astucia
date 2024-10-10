@@ -1,0 +1,20 @@
+{
+  "name": "typescript-clean-architecture-app",
+  "version": "1.0.0",
+  "description": "Clean Architecture TypeScript App",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "clean architecture",
+    "typescript",
+    "app"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
