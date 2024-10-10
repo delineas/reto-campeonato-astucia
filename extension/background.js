@@ -5,6 +5,11 @@ chrome.runtime.onInstalled.addListener(() => {
         contexts: ["page"],
         documentUrlPatterns: ["*://*.amazon.com/*", "*://*.amazon.es/*"],
     });
+
+    chrome.storage.sync.set({
+      apiUrl: "https://amazon-price-tracker-malandriner.test/api",
+    });
+
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {

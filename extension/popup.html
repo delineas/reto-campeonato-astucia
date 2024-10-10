@@ -3,31 +3,85 @@
 <head>
   <title>Amazon Price Tracker</title>
   <script src="popup.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      width: 300px;
-      padding: 10px;
+      width: 350px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
     }
     h1 {
-      font-size: 18px;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    #productIdContainer {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    #productId {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #addCurrentProduct, #captureCurrentUrl {
+      width: 100%;
       margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #checkPriceHistory {
+      flex-shrink: 0;
+      margin-left: 5px;
     }
     #priceHistory {
       list-style-type: none;
       padding: 0;
     }
     #priceHistory li {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
       margin-bottom: 5px;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+    .price-date {
+      font-size: 12px;
+      color: #666;
+    }
+    .price {
+      font-weight: bold;
+      color: #333;
     }
   </style>
 </head>
 <body>
-<body>
-  <h1>Price History</h1>
-  <button id="addCurrentProduct">Add Current Product</button>
-  <input type="text" id="productId" placeholder="Enter Product ID">
-  <button id="checkPriceHistory">Check Price History</button>
+  <h1>Amazon Price Tracker</h1>
+  <button id="addCurrentProduct"><i class="fas fa-plus"></i> Add Current Product</button>
+  <button id="captureCurrentUrl"><i class="fas fa-search"></i> Capture Current URL and Check Price History</button>
+  <div id="productIdContainer">
+    <input type="text" id="productId" placeholder="Enter Product ID">
+    <button id="checkPriceHistory"><i class="fas fa-search"></i></button>
+  </div>
   <ul id="priceHistory"></ul>
 </body>
 </html>
